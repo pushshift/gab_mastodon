@@ -1,0 +1,173 @@
+{
+  "settings": {
+    "index": {
+      "codec": "default",
+      "refresh_interval": "30s",
+      "shard.check_on_startup": "checksum",
+      "mapping.coerce": "false",
+      "max_result_window": 25000,
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "routing_partition_size": 1,
+      "queries": {
+        "cache": {
+          "enabled": "true"
+        }
+      }
+    },
+    "analysis": {
+      "analyzer": {
+        "lowercase": {
+          "type": "custom",
+          "filter": [
+            "lowercase",
+            "word_delimiter"
+          ],
+          "tokenizer": "icu_tokenizer"
+        },
+        "default": {
+          "type" : "custom",
+          "tokenizer": "icu_tokenizer",
+          "filter": [
+            "wd",
+            "icu_folding"
+          ]
+        }
+      },
+      "filter": {
+        "wd": {
+          "type": "word_delimiter",
+          "catenate_all": true,
+          "preserve_original" : false
+        },
+        "asciifolding": {
+          "type": "asciifolding",
+          "preserve_original": true
+        }
+      },
+      "normalizer": {
+        "default": {
+          "type": "custom",
+          "char_filter": [],
+          "filter": [
+            "lowercase",
+            "icu_folding"
+          ]
+        }
+      }
+    }
+  },
+  "mappings": {
+    "dynamic": "false",
+    "_routing": {
+      "required": "false"
+    },
+    "_source": {
+      "excludes": [
+        "length",
+        "updated_delta"
+        ]
+    },
+    "properties": {
+      "created_at": {
+        "type": "date",
+        "format": "date_time||epoch_second"
+      },
+      "content": {
+        "type": "text"
+      },
+      "body": {
+        "type": "text"
+      },
+      "lang": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "id": {
+        "type": "long",
+        "coerce": true
+      },
+      "in_reply_to_account_id": {
+        "type": "long",
+        "coerce": true
+      },
+      "in_reply_to_id": {
+        "type": "long",
+        "coerce": true
+      },
+      "reblogs_count": {
+        "type": "integer"
+      },
+      "replies_count": {
+        "type": "integer"
+      },
+      "favourites_count": {
+        "type": "integer"
+      },
+      "account": {
+        "properties": {
+          "acct": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "note_text": {
+            "type": "text"
+          },
+          "created_at": {
+            "type": "date",
+            "format": "date_time||epoch_second"
+          },
+          "username": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "display_name": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword"
+              }
+            }
+          },
+          "id": {
+            "type": "integer",
+            "coerce": true
+          },
+          "followers_count": {
+            "type": "integer"
+          },
+          "following_count": {
+            "type": "integer"
+          },
+          "statuses_count": {
+            "type": "integer"
+          },
+          "is_pro": {
+            "type": "boolean"
+          },
+          "is_verified": {
+            "type": "boolean"
+          },
+          "bot": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}
